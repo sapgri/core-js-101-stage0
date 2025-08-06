@@ -127,8 +127,13 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  return (
+    rect1.left < rect2.left + rect2.width &&
+    rect1.left + rect1.width > rect2.left &&
+    rect1.top < rect2.top + rect2.height &&
+    rect1.top + rect1.height > rect2.top
+  );
 }
 
 /**
@@ -157,8 +162,12 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return (
+    ((point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2) **
+      0.5 <
+    circle.radius
+  );
 }
 
 /**
@@ -172,8 +181,13 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  for (let i = 0; i < str.length; i += 1) {
+    if (!str.slice(0, i).includes(str[i]) && !str.slice(i + 1).includes(str[i]))
+      return str[i];
+  }
+
+  return null;
 }
 
 /**
@@ -198,8 +212,8 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  return `${isStartIncluded ? '[' : '('}${Math.min(a, b)}, ${Math.max(a, b)}${isEndIncluded ? ']' : ')'}`;
 }
 
 /**
@@ -272,8 +286,14 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  return num < 10
+    ? num
+    : getDigitalRoot(
+        String(num)
+          .split('')
+          .reduce((acc, item) => acc - -item)
+      );
 }
 
 /**
