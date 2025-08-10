@@ -234,18 +234,18 @@ function getRectangleString(width, height) {
  */
 function encodeToRot13(str) {
   const key = 'abcdefghijklmnopqrstuvwxyz';
-  let res = '';
+  let result = '';
   [...str].forEach((item) => {
     if (key.includes(item.toLowerCase())) {
-      res +=
+      result +=
         item.toLowerCase() === item
           ? key[(key.indexOf(item) + 13) % 26]
           : key[(key.indexOf(item.toLowerCase()) + 13) % 26].toUpperCase();
     } else {
-      res += item;
+      result += item;
     }
   });
-  return res;
+  return result;
 }
 
 /**

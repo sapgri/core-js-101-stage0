@@ -27,19 +27,11 @@
  *
  */
 function getFizzBuzz(num) {
-  if (num % 3 === 0 && num % 5 === 0) {
-    return 'FizzBuzz';
-  }
+  if (num % 15 === 0) return 'FizzBuzz';
 
-  if (num % 3 === 0) {
-    return 'Fizz';
-  }
+  if (num % 5 === 0) return 'Buzz';
 
-  if (num % 5 === 0) {
-    return 'Buzz';
-  }
-
-  return num;
+  return num % 3 ? num : 'Fizz';
 }
 
 /**
@@ -70,9 +62,9 @@ function getFactorial(n) {
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
 function getSumBetweenNumbers(n1, n2) {
-  return Array.from({ length: 1 + n2 - n1 })
-    .map((_, i) => n1 + i)
-    .reduce((a, b) => a + b);
+  return Array.from({ length: 1 + n2 - n1 }, (_, i) => n1 + i).reduce(
+    (a, b) => a + b
+  );
 }
 
 /**
@@ -164,8 +156,7 @@ function doRectanglesOverlap(rect1, rect2) {
  */
 function isInsideCircle(circle, point) {
   return (
-    ((point.x - circle.center.x) ** 2 + (point.y - circle.center.y) ** 2) **
-      0.5 <
+    Math.hypot(point.x - circle.center.x, point.y - circle.center.y) <
     circle.radius
   );
 }
@@ -268,8 +259,17 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  return !(
+    String(ccn)
+      .split('')
+      .reverse()
+      .map((n, i) => {
+        if (i % 2) return n * 2 > 9 ? n * 2 - 9 : n * 2;
+        return +n;
+      })
+      .reduce((a, b) => a + b) % 10
+  );
 }
 
 /**
@@ -317,8 +317,26 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const stack = [];
+  const brackets = {
+    '[': ']',
+    '(': ')',
+    '{': '}',
+    '<': '>',
+  };
+
+  for (let i = 0; i < str.length; i += 1) {
+    if (brackets[str[i]]) stack.push(str[i]);
+
+    if (
+      Object.values(brackets).includes(str[i]) &&
+      brackets[stack.pop()] !== str[i]
+    )
+      return false;
+  }
+
+  return !stack.length;
 }
 
 /**
@@ -341,8 +359,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 /**
@@ -357,8 +375,14 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const splitedPathes = pathes.map((path) => path.split('/'));
+
+  const result = splitedPathes[0].filter((value, i) =>
+    splitedPathes.map((path) => path[i]).every((part) => part === value)
+  );
+
+  return result.length ? `${result.join('/')}/` : '';
 }
 
 /**
@@ -379,8 +403,21 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+// function getMatrixProduct(/* m1, m2 */) {
+//   throw new Error('Not implemented');
+// }
+function getMatrixProduct(m1, m2) {
+  const result = [];
+  for (let i = 0; i < m1.length; i += 1) {
+    result[i] = Array(m2[0].length).fill(0);
+    for (let j = 0; j < m2[0].length; j += 1) {
+      for (let k = 0; k < m1[0].length; k += 1) {
+        result[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -413,8 +450,24 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const lines = [
+    [position[0][0], position[0][1], position[0][2]],
+    [position[1][0], position[1][1], position[1][2]],
+    [position[2][0], position[2][1], position[2][2]],
+    [position[0][0], position[1][0], position[2][0]],
+    [position[0][1], position[1][1], position[2][1]],
+    [position[0][2], position[1][2], position[2][2]],
+    [position[0][0], position[1][1], position[2][2]],
+    [position[0][2], position[1][1], position[2][0]],
+  ];
+
+  for (let i = 0; i < lines.length; i += 1) {
+    if (lines[i][0] && lines[i].every((cell) => cell === lines[i][0]))
+      return lines[i][0];
+  }
+
+  return undefined;
 }
 
 module.exports = {

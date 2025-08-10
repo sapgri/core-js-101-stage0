@@ -197,13 +197,8 @@ function roundToPowerOfTen(num, pow) {
  *   17 => true
  */
 function isPrime(n) {
-  for (let i = 2; i <= n ** 0.5; ) {
+  for (let i = 2; i <= n ** 0.5; i === 2 ? (i += 1) : (i += 2)) {
     if (n % i === 0) return false;
-    if (i === 2) {
-      i += 1;
-    } else {
-      i += 2;
-    }
   }
   return n > 1;
 }
@@ -224,7 +219,7 @@ function isPrime(n) {
  *   toNumber(new Number(42), 0) => 42
  */
 function toNumber(value, def) {
-  return Number.isNaN(Number(value)) ? def : Number(value);
+  return Number.isNaN(+value) ? def : +value;
 }
 
 module.exports = {

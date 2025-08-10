@@ -35,9 +35,7 @@ function findElement(arr, value) {
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
 function generateOdds(len) {
-  return Array.from({ length: len * 2 })
-    .map((_, i) => i)
-    .filter((n) => n % 2);
+  return Array.from({ length: len * 2 }, (_, i) => i).filter((n) => n % 2);
 }
 
 /**
@@ -100,7 +98,7 @@ function getArrayOfStrings(arr) {
  *    [ false, 0, NaN, '', undefined ]   => [ ]
  */
 function removeFalsyValues(arr) {
-  return arr.filter((n) => n);
+  return arr.filter(Boolean);
 }
 
 /**
@@ -471,7 +469,7 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-  return Array.from({ length: end - start + 1 }).map((_, i) => start + i);
+  return Array.from({ length: 1 + end - start }, (_, i) => start + i);
 }
 
 /**
